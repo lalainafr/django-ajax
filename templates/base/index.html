@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %} {% load static %} {% block header %}
+<!-- Header-->
+<header class="bg-secondary py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Django AJAX</h1>
+            <p class="lead fw-normal text-white-50 mb-0">With Jquery</p>
+            <p class="fw-normal text-white-50 mb-0">CRUD without page reload</p>
+        </div>
+    </div>
+</header>
+{% endblock header %} {% block content %} {%load widget_tweaks%}
+<!-- Section-->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="text-muted">Add/Update Student</h3>
+                <br />
+                <div class="w-50 borde rounded-4 shadow-lg p-4">
+                    <form action="" method="POST">
+                        {% csrf_token%}
+                        <div class="floatingInput mb-3">
+                            <label for="floatingInput" class="form-label">
+                                <small> Name </small>
+                            </label>
+                            {% render_field form.name class="form-control" %}
+                        </div>
+                        <div class="floatingInput mb-3">
+                            <label for="floatingInput" class="form-label">
+                                <small> Email </small>
+                            </label>
+                            {% render_field form.email class="form-control" %}
+                        </div>
+                        <div class="floatingInput mb-3">
+                            <label for="floatingInput" class="form-label">
+                                <small> Course </small>
+                            </label>
+                            {% render_field form.course class="form-control" %}
+                        </div>
+                        <input
+                            type="button"
+                            class="btn btn-sm btn-success"
+                            value="Save"
+                        />
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h3 class="text-muted">Student List</h3>
+                List updated dynamically
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+<!-- Footer-->
