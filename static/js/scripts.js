@@ -1,8 +1,9 @@
+// CREATE
 $('#btn-save').click(function () { 
 
     let output = "";
 
-    // take the value of all input in the form (information in the browser)
+    // take the value of all input in the form (information 'NAME' in the browser)
     let name = $('#id_name').val();
     let email = $('#id_email').val();
     let course = $('#id_course').val();
@@ -28,7 +29,7 @@ $('#btn-save').click(function () {
         // appl AJAX
         $.ajax({
             // url: "{% url 'save-data' %}",
-            url: "save-data/",
+            url: "save/",
             method: "POST",
             data: mydata,
 
@@ -46,10 +47,10 @@ $('#btn-save').click(function () {
                             "</td><td>" + x[i].name +
                             "</td><td>" + x[i].email +
                             "</td><td>" + x[i].course +
-                            "</td><td> <input type='button' value='Edit' class='btn btn-outline-warning btn-sm' data-sid=" + 
-                             x[i].id + "/>" + " " +
-                             "<input type='button' value='Delete' class='btn btn-outline-danger btn-sm' data-sid=" +
-                             x[i].id + "/>"
+                            "</td><td> <input type='button' value='Edit' class='btn btn-outline-warning btn-edit btn-sm' data-sid=" + 
+                             x[i].id + ">" + " " +
+                             "<input type='button' value='Delete' class='btn btn-outline-danger btn-del btn-sm' data-sid=" +
+                             x[i].id + ">"
                     }   
 
                     
@@ -61,7 +62,7 @@ $('#btn-save').click(function () {
 
                 }
                 if(data.status == 'Unable to save'){
-
+                    console.log('Unable to save')
                 }
 
             },
@@ -69,3 +70,40 @@ $('#btn-save').click(function () {
     }
 
 });
+
+
+// DELETE
+$('#tbody').on("click", ".btn-del", function() {
+    // console.log('Del button clicked on the TBODY ');
+
+    // récuperer le id du student à partir du 'data-sid'
+    let id = $(this).attr("data-sid")
+
+    mydata = {
+        student_id:id,
+    };
+
+    mythis = $(this);
+    // <input type="button" value="Delete" class="btn btn-outline-danger btn-del btn-sm" data-sid="52"></input>
+
+
+    // appel AJAX
+    $.ajax({
+        method: "POST",
+        url: "delete/",
+        data: mydata,
+        success: function(data) {
+            console.log(data.status)
+
+            if(data.status == 1){
+                console.log('Data deleted')
+                // prendre et fadeOut le this (input...) le plus proche du tr
+                $(mythis).closest("tr").fadeOut();
+            } 
+
+            if(data.status == 0){
+                console.log('Unable to delete data')
+            } 
+        },
+    });
+})
