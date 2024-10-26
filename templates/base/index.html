@@ -11,13 +11,14 @@
 </header>
 {% endblock header %} {% block content %} {%load widget_tweaks%}
 <!-- Section-->
-<section class="py-5">
+<section>
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
-                <h3 class="text-muted">Add/Update Student</h3>
+            <div class="col-md-5">
+                <h2 class="text-muted">Add/Update Student</h2>
                 <br />
                 <div class="w-50 borde rounded-4 shadow-lg p-4">
+                    <!-- Specifier la methode POST -->
                     <form action="" method="POST">
                         {% csrf_token%}
                         <div class="floatingInput mb-3">
@@ -42,13 +43,52 @@
                             type="button"
                             class="btn btn-sm btn-success"
                             value="Save"
+                            id="btn-save"
                         />
                     </form>
                 </div>
             </div>
-            <div class="col-md-6">
-                <h3 class="text-muted">Student List</h3>
-                List updated dynamically
+            <div class="col-md-7">
+                <h2 class="text-muted">Student list</h2>
+                <small class="text-muted"> List updated dynamically </small>
+                <br />
+                <br />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Course</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <!-- id 'tbody' to change the content withthe ajaxa data  -->
+                    <tbody id="tbody">
+                        {% for student in stu %}
+                        <tr>
+                            <th scope="row">{{student.id}}</th>
+                            <td>{{student.name}}</td>
+                            <td>{{student.email}}</td>
+                            <td>{{student.course}}</td>
+                            <td>
+                                <input
+                                    type="button"
+                                    value="Edit"
+                                    class="btn btn-outline-warning btn-sm"
+                                    data-sid=""
+                                />
+                                <input
+                                    type="button"
+                                    value="Delete"
+                                    class="btn btn-outline-danger btn-sm"
+                                    data-sid=""
+                                />
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
