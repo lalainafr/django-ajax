@@ -17,14 +17,23 @@ def save_data(request):
     if request.method =='POST':
         form = StudentForm(request.POST)
         if form.is_valid():
+            # get the SID for the EDIT ajax
+            sid = request.POST.get('stuid')
             # assign the value of the form content - 'name:...' in the browser    
             name = request.POST['name']
             email = request.POST['email']
             course = request.POST['course']
 
             # create an instance of Student
-            s = Student(name=name, email=email, course=course)
-            
+                #  SID récupéré à partir de AJAX --> mydata = {sid:id}
+                # si on a un SID on le met la valeur dans ID
+
+            if(sid == ''):
+                s = Student(name=name, email=email, course=course)
+            else:
+                # on assigne a id le sid
+                s = Student(id= sid, name=name, email=email, course=course)
+                 
             s.save()
             
             # --> PUT INT THE TABLE INT THE RIGHT SIDE THE DATA REVEICED FROM THE AJAX CALL
@@ -41,13 +50,25 @@ def save_data(request):
 @csrf_exempt
 def delete_data(request):
     if request.method == 'POST':
-        # requete POST à partir de l'AJAX
-        id = request.POST.get('student_id')
+        #  SID récupéré à partir de AJAX --> mydata = {sid:id}
+        id = request.POST.get('sid')
         s = Student.objects.get(pk=id)
         s.delete()
         return JsonResponse({'status':1})
     else: 
         return JsonResponse({'status':0})
         
+        
+@csrf_exempt
+def edit_data(request):
+    if request.method == 'POST':
+        # requete POST à partir de l'AJAX
+        id = request.POST.get('sid')
+
+        student = Student.objects.get(pk=id)
+        student_data = {'id': student.id, 'name': student.name, 'email': student.email, 'course': student.course}
+
+        return JsonResponse(student_data)
+
         
         

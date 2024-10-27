@@ -3,6 +3,7 @@ $('#btn-save').click(function () {
 
     let output = "";
 
+    let sid = $('#stuid').val() // hidden input for EDIT
     // take the value of all input in the form (information 'NAME' in the browser)
     let name = $('#id_name').val();
     let email = $('#id_email').val();
@@ -19,8 +20,10 @@ $('#btn-save').click(function () {
         // console.log(email);
         // console.log(course);
 
-        // take the value of the input data typed by the user
+        // CREATE - take the value of the input data typed by the user
+        // EDIT - take the value of the input data to be edited 
         mydata = {
+            stuid: sid, // hidden input for EDIT
             name: name,
             email: email,
             course: course
@@ -80,7 +83,7 @@ $('#tbody').on("click", ".btn-del", function() {
     let id = $(this).attr("data-sid")
 
     mydata = {
-        student_id:id,
+        sid:id,
     };
 
     mythis = $(this);
@@ -104,6 +107,37 @@ $('#tbody').on("click", ".btn-del", function() {
             if(data.status == 0){
                 console.log('Unable to delete data')
             } 
+        },
+    });
+})
+
+
+// EDIT
+$('#tbody').on("click", ".btn-edit", function() {
+    
+    // récuperer le id du student à partir du 'data-sid'
+    let id = $(this).attr("data-sid")
+    
+    mydata = {
+        sid:id,
+    };
+    
+    mythis = $(this);
+    console.log(mydata);
+    // <input type="button" value="Delete" class="btn btn-outline-danger btn-del btn-sm" data-sid="52"></input>
+
+
+    // appel AJAX
+    $.ajax({
+        method: "POST",
+        url: "edit/",
+        data: mydata,
+        success: function(data) {
+            // NAME du formulaire sur le browser
+            $('#stuid').val(data.id);
+            $('#id_name').val(data.name);
+            $('#id_email').val(data.email);
+            $('#id_course').val(data.course)
         },
     });
 })

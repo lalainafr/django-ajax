@@ -21,6 +21,10 @@
                     <!-- Specifier la methode POST -->
                     <form action="" method="POST">
                         {% csrf_token%}
+
+                        <!-- pour le EDIT en ajax -->
+                        <input type="hidden" name="stuid" id="stuid" />
+
                         <div class="floatingInput mb-3">
                             <label for="floatingInput" class="form-label">
                                 <small> Name </small>
@@ -92,6 +96,7 @@
             </div>
         </div>
     </div>
+    {{id}}
 </section>
 {% endblock content %}
 <!-- Footer-->
